@@ -1,0 +1,71 @@
+# 配置文件
+
+# 数据配置
+data:
+  dataset_name: "sahil2801/codealpaca"
+  dataset_path: "./data/codealpaca"
+  train_split: 0.9
+  val_split: 0.05
+  test_split: 0.05
+  max_length: 512
+  max_target_length: 256
+
+# 模型配置
+model:
+  base_model: "codellama/CodeLlama-7b-hf"  # 或 "bigcode/starcoder"
+  # 可选模型:
+  # - "codellama/CodeLlama-7b-hf"
+  # - "codellama/CodeLlama-13b-hf"
+  # - "bigcode/starcoder"
+  # - "bigcode/starcoderbase"
+  device: "cuda"
+  load_in_8bit: false  # QLoRA 使用
+  load_in_4bit: true   # QLoRA 使用
+
+# LoRA 配置
+lora:
+  r: 16
+  lora_alpha: 32
+  target_modules:
+    - "q_proj"
+    - "v_proj"
+    - "k_proj"
+    - "o_proj"
+  lora_dropout: 0.05
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# QLoRA 配置
+qlora:
+  bits: 4
+  use_double_quant: true
+  quant_type: "nf4"
+  compute_dtype: "float16"
+  # LoRA 参数与上面相同
+
+# 训练配置
+training:
+  output_dir: "./checkpoints"
+  num_train_epochs: 3
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2e-4
+  weight_decay: 0.01
+  warmup_steps: 100
+  logging_steps: 10
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  fp16: true
+  gradient_checkpointing: true
+  optim: "paged_adamw_32bit"
+
+# 评估配置
+evaluation:
+  metrics:
+    - "bleu"
+    - "codebleu"
+    - "execution_success"
+  num_samples: 100
+

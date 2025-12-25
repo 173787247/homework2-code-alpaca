@@ -1,0 +1,48 @@
+services:
+  # 作业2：Code Alpaca LoRA/QLoRA 微调（GPU版本）
+  homework2-code-alpaca-gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: homework2-code-alpaca-gpu
+    volumes:
+      # 挂载数据目录
+      - ./data:/app/data
+      # 挂载模型和结果目录
+      - ./checkpoints:/app/checkpoints
+      - ./logs:/app/logs
+      - ./output:/app/output
+      # 挂载模型缓存（避免重复下载）
+      - ./models:/app/models
+    shm_size: '8gb'  # 增加共享内存大小
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+      - OMP_NUM_THREADS=8
+    restart: unless-stopped
+    # NVIDIA GPU支持（RTX 5080）
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import torch; print('GPU available:', torch.cuda.is_available())"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    stdin_open: true
+    tty: true
+    networks:
+      - homework2-network
+
+networks:
+  homework2-network:
+    driver: bridge
+
