@@ -33,11 +33,15 @@ ENV/
 *.swo
 *~
 
-# 数据
+# 数据（排除数据文件，但保留源代码）
 data/
 *.csv
 *.json
 *.parquet
+# 允许源代码目录
+!src/data/*.py
+# 允许报告目录中的JSON文件
+!reports/*.json
 
 # 模型和检查点
 checkpoints/
@@ -58,8 +62,19 @@ tensorboard/
 output/
 results/
 *.jpg
-*.png
 *.jpeg
+# 允许对比报告文件（需要提交给老师）
+# 只允许提交 .json 和 .png 报告文件，不包括说明文档
+!reports/
+reports/*
+!reports/*.json
+!reports/*.png
+# 兼容旧版本的输出目录
+!comparison_results/
+comparison_results/*
+!comparison_results/*.json
+!comparison_results/*.png
+!comparison_results/*.md
 
 # Jupyter
 .ipynb_checkpoints/
@@ -69,7 +84,8 @@ results/
 .DS_Store
 Thumbs.db
 
-# HuggingFace 缓存
+# HuggingFace 缓存（模型文件很大，不提交）
 .cache/
 huggingface/
+cache/
 
