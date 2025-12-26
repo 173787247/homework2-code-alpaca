@@ -59,34 +59,72 @@ pip install -r requirements.txt
 
 ## 使用方法
 
-### 1. 下载数据
+### 完整流程：LoRA/QLoRA 微调并对比前后效果
+
+#### 1. 下载数据
 
 ```bash
 python download_data.py
 ```
 
-### 2. LoRA 微调
+#### 2. LoRA 微调
 
 ```bash
 python train_lora.py --config config.yaml
 ```
 
-### 3. QLoRA 微调
+训练完成后，模型会保存在 `./checkpoints/lora/final/`
+
+#### 3. QLoRA 微调
 
 ```bash
 python train_qlora.py --config config.yaml
 ```
 
-### 4. 评估模型
+训练完成后，模型会保存在 `./checkpoints/qlora/final/`
 
+#### 4. 生成对比报告
+
+**LoRA 微调前后对比：**
 ```bash
-python evaluate.py --model_path checkpoints/lora_model
+python compare_results.py \
+  --before_model codellama/CodeLlama-7b-hf \
+  --after_model ./checkpoints/lora/final \
+  --base_model codellama/CodeLlama-7b-hf \
+  --num_samples 50 \
+  --output_dir ./reports
 ```
 
-### 5. 对比结果
+**QLoRA 微调前后对比：**
+```bash
+python compare_results.py \
+  --before_model codellama/CodeLlama-7b-hf \
+  --after_model ./checkpoints/qlora/final \
+  --base_model codellama/CodeLlama-7b-hf \
+  --num_samples 50 \
+  --output_dir ./reports
+```
+
+**重要：** 报告文件会保存在 `reports/` 目录中，包括：
+- `comparison.json` - 详细的对比数据（微调前后在测试集上的表现、示例代码生成对比）
+- `comparison.png` - 性能指标对比图表（BLEU、CodeBLEU 分数对比）
+
+这些报告文件**需要提交到GitHub**供老师查看。
+
+#### 5. 单独评估模型（可选）
 
 ```bash
-python compare_results.py --before_model original_model --after_model checkpoints/lora_model
+# 评估 LoRA 模型
+python evaluate.py \
+  --model_path ./checkpoints/lora/final \
+  --base_model codellama/CodeLlama-7b-hf \
+  --num_samples 100
+
+# 评估 QLoRA 模型
+python evaluate.py \
+  --model_path ./checkpoints/qlora/final \
+  --base_model codellama/CodeLlama-7b-hf \
+  --num_samples 100
 ```
 
 ## 微调前后对比
@@ -123,4 +161,6 @@ python compare_results.py --before_model original_model --after_model checkpoint
 - LoRA: https://arxiv.org/abs/2106.09685
 - QLoRA: https://arxiv.org/abs/2305.14314
 - PEFT: https://github.com/huggingface/peft
+
+
 

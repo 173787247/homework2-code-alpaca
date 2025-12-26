@@ -50,3 +50,4 @@ RUN mkdir -p /app/data /app/checkpoints /app/logs /app/output /app/models
 # 设置默认命令（保持容器运行）
 CMD ["tail", "-f", "/dev/null"]
 
+

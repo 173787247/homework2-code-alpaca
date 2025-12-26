@@ -1,0 +1,130 @@
+{
+  "before": {
+    "bleu_mean": 0.2900599753522625,
+    "bleu_std": 0.25874199259985453,
+    "codebleu_mean": 0.39304761904761903,
+    "codebleu_std": 0.4545606236182559
+  },
+  "after": {
+    "bleu_mean": 0.4295003647793701,
+    "bleu_std": 0.35460865135234393,
+    "codebleu_mean": 0.38238095238095243,
+    "codebleu_std": 0.45578692758350264
+  },
+  "improvement": {
+    "bleu": 0.13944038942710757,
+    "codebleu": -0.010666666666666602
+  },
+  "examples": [
+    {
+      "instruction": "Compose a SQL query to find the number of students whose GPA is greater than 3.5.",
+      "input": "Student",
+      "ground_truth": "SELECT COUNT(*) FROM Student WHERE GPA > 3.5;",
+      "before_generated": "Number of students whose GPA is greater than 3.",
+      "after_generated": "True\n\n### Input:\nStudent\n\n###",
+      "before_bleu": 0.1111111111111111,
+      "after_bleu": 0.2,
+      "before_codebleu": 1.0,
+      "after_codebleu": 1.0
+    },
+    {
+      "instruction": "Using the \"requests\" library, write a code to get the data from the endpoint http://jsonplaceholder.typicode.com/users",
+      "input": "",
+      "ground_truth": "import requests\n\ndef get_api_data():\n    url = 'http://jsonplaceholder.typicode.com/users'\n    response = requests.get(url)\n    return response.json()\n    \nif __name__ == '__main__':\n    data = get_api_data()\n    print(data)",
+      "before_generated": "```\n[\n    {\n        \"id\": 1,\n        \"name\": \"Leanne Graham\",\n        \"username\": \"Bret\",\n        \"email\": \"Sincere@april.biz\",\n        \"address\": {\n            \"street\": \"Kulas Light\",\n            \"suite\": \"Apt. 556\",\n            \"city\": \"Gwenborough\",\n            \"zipcode\": \"92998-3874\",\n            \"geo\": {\n                \"lat\": \"-37.3159\",\n                \"lng\": \"81.1496\"\n            }\n        },\n        \"phone\": \"1-770-736-8031 x56442\",\n        \"website\": \"hildegard.org\",\n        \"company\"",
+      "after_generated": "[{'id': 1, 'name': 'Leanne Graham', 'username': 'Bret', 'email': 'Sincere@april.biz', 'address': {'street': 'Kulas Light', 'suite': 'Apt. 556', 'city': 'Gwenborough', 'zipcode': '92998-3874', 'geo': {'lat': '-37.3159', 'lng': '81.1496'}}, 'phone': '1-770-736-8031 x56442', 'website': 'hildegard.org', 'company",
+      "before_bleu": 0.0,
+      "after_bleu": 0.0,
+      "before_codebleu": 0.0,
+      "after_codebleu": 0.0
+    },
+    {
+      "instruction": "Parse the following JSON string and print out how many objects are there?",
+      "input": "resp = '[{\"name\": \"john\", \"age\": 25}, {\"name\": \"Anna\", \"age\": 17}, {\"name\": \"Rick\", \"age\": 46}]'",
+      "ground_truth": "import json\n\nresp = '[{\"name\": \"john\", \"age\": 25}, {\"name\": \"Anna\", \"age\": 17}, {\"name\": \"Rick\", \"age\": 46}]'\n\ndata = json.loads(resp)\nprint(len(data)) # 3 objects",
+      "before_generated": "3\n\n### Explanation:\nThere are 3 objects in the JSON string.\n\n### Code:\n```python\nimport json\n\nresp = '[{\"name\": \"john\", \"age\": 25}, {\"name\": \"Anna\", \"age\": 17}, {\"name\": \"Rick\", \"age\": 46}]'\n\ndata = json.loads(resp)\n\nprint(len(data))\n```\n\n### References:\n- https://docs.python.org/3/library/json.html\n- https://www.w3schools.com/python/python_json.asp\n- https",
+      "after_generated": "3\n\n### Response:",
+      "before_bleu": 0.5581395348837209,
+      "after_bleu": 0.3333333333333333,
+      "before_codebleu": 1.0,
+      "after_codebleu": 0.0
+    },
+    {
+      "instruction": "Create another function to remove duplicates from the array.",
+      "input": "arr = [1, 1, 2, 3, 4, 5, 5, 6, 7]",
+      "ground_truth": "def remove_duplicates(arr):\n    result = []\n    for num in arr:\n        if num not in result: # if current element is unique, add to the list.\n            result.append(num)\n    return result\n    \nnew_arr = remove_duplicates(arr)\nprint(new_arr) # [1, 2, 3, 4, 5, 6, 7]",
+      "before_generated": "arr = [1, 2, 3, 4, 5, 6, 7]\n\n### Explanation:\nThe function should remove all the duplicates from the array.\n\n### Code:\n\n```javascript\nfunction removeDuplicates(arr) {\n  let newArr = [];\n  for (let i = 0; i < arr.length; i++) {\n    if (newArr.indexOf(arr[i]) === -1) {\n      newArr.push(arr[i]);\n    }\n  }\n  return newArr;\n}\n\nconsole.log(removeDuplicates([1, 1, 2, 3, 4",
+      "after_generated": "[",
+      "before_bleu": 0.3157894736842105,
+      "after_bleu": 0.0,
+      "before_codebleu": 0.0,
+      "after_codebleu": 0.0
+    },
+    {
+      "instruction": "Suggest a code to find the longest sub-string in a string.",
+      "input": "string = \"The quick brown fox jump over lazy dog\"",
+      "ground_truth": "def find_longest_substring(string):\n    # get the length of the string\n    length = len(string)\n     \n    # variable to store the longest substring length\n    longest_substring_length = 0\n     \n    # variable to store the longest substring\n    longest_substring = ''\n     \n    # loop through the string\n    for i in range(length):\n      tmp_str = ''\n      for j in range(i, length):\n        if string[j] not in tmp_str:\n          tmp_str += string[j]\n        else:\n            break\n      if len(tmp_",
+      "before_generated": "longest_substring = \"quick brown fox jumps over lazy dog\"\n\n### Explanation:\nThe longest sub-string is \"quick brown fox jumps over lazy dog\"\n\n### Solution:\n```python\ndef longest_substring(string):\n    \"\"\"\n    Find the longest substring in a given string\n    \"\"\"\n    if len(string) == 0:\n        return \"\"\n    if len(string) == 1:\n        return string\n    if len(string) == 2:\n        if string[0] == string[1]:\n            return string\n        else:\n            return string[0]\n    if len(string) =",
+      "after_generated": "The quick brown",
+      "before_bleu": 0.35294117647058826,
+      "after_bleu": 0.3333333333333333,
+      "before_codebleu": 0.2,
+      "after_codebleu": 0.0
+    },
+    {
+      "instruction": "Reformat the following if statement so that it has only one condition.",
+      "input": "if (x < 0 and y >= 0) or (x >= 0 and y < 0):",
+      "ground_truth": "if x * y < 0:",
+      "before_generated": "if ((x < 0 and y >= 0) or (x >= 0 and y < 0)):\n\n### Instruction",
+      "after_generated": "if ((x < 0 and y >= 0)",
+      "before_bleu": 0.2777777777777778,
+      "after_bleu": 0.375,
+      "before_codebleu": 1.0,
+      "after_codebleu": 1.0
+    },
+    {
+      "instruction": "Convert this program into an AsyncIO based one.",
+      "input": "import time\n\ndef calculate_sum(numbers):\n    result = 0\n    for num in numbers:\n        result += num\n        time.sleep(2)\n    return result",
+      "ground_truth": "import asyncio\n\nasync def calculate_sum(numbers):\n    result = 0\n    for num in numbers:\n        result += num\n        await asyncio.sleep(2)\n    return result",
+      "before_generated": "import asyncio\nimport time\n\nasync def calculate_sum(numbers):\n    result = 0\n    for num in numbers:\n        result += num\n        await asyncio.sleep(2)",
+      "after_generated": "import asyncio\n\nasync def calculate_sum(numbers):\n    result = 0\n    for",
+      "before_bleu": 0.9473684210526315,
+      "after_bleu": 1.0,
+      "before_codebleu": 1.0,
+      "after_codebleu": 1.0
+    },
+    {
+      "instruction": "Create a function to calculate the total cost after N discounts.",
+      "input": "discounts = [10, 15, 20]",
+      "ground_truth": "def calculate_total(discounts):\n    total = 0\n    for discount in discounts:\n        total -= total * (discount / 100)\n    return total",
+      "before_generated": "total",
+      "after_generated": "total_cost =",
+      "before_bleu": 1.0,
+      "after_bleu": 0.5,
+      "before_codebleu": 0.0,
+      "after_codebleu": 0.0
+    },
+    {
+      "instruction": "Write a SQL query to find the age difference between two people in a table.",
+      "input": "Table: \"people\"\n\n| name | age |\n|------|-----|\n| John | 30  |\n| Jane | 25  |",
+      "ground_truth": "SELECT (max(people.age)-min(people.age)) as age_difference\nFROM people;",
+      "before_generated": "Table: \"people\"\n\n| name | age |\n|------|-----|\n| John | 30  |\n| Jane | 25  |\n\n### Explanation:\nJohn is 30 years old and Jane is 25 years old. John is 30 - 25 = 5 years older than Jane.\n\n### SQL Schema:\n\n```sql\nCREATE TABLE people (\n  name varchar(50),\n  age int\n);\n```\n\n### Solution:\n\n```sql\nSELECT name, age, age - (SELECT age FROM people WHERE name = 'Jane') AS age_diff\nFROM people\nWHERE name = 'John';\n```\n\n### Note:\n\n- The query result format is in the following example.\n\n### Result:",
+      "after_generated": "1",
+      "before_bleu": 0.042105263157894736,
+      "after_bleu": 0.0,
+      "before_codebleu": 0.0,
+      "after_codebleu": 1.0
+    },
+    {
+      "instruction": "Reformat the following C++ code to reduce the memory it needs to function.",
+      "input": "char str1[] = \"Hello\";\nchar str2[] = \"World!\";",
+      "ground_truth": "const char* str1 = \"Hello\";\nconst char* str2 = \"World!\";",
+      "before_generated": "char str1[] = {'H', 'e', 'l', 'l', 'o'};\nchar str2[] = {'W', '",
+      "after_generated": "char str1[6] = \"Hello\";\nchar str2[7] = \"World!\";\n\n### Response:",
+      "before_bleu": 0.15384615384615385,
+      "after_bleu": 0.4,
+      "before_codebleu": 0.0,
+      "after_codebleu": 0.0
+    }
+  ]
+}

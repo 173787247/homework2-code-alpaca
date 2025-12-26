@@ -30,3 +30,4 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "3. 网络连接是否正常" -ForegroundColor Yellow
 }
 
+
