@@ -59,17 +59,32 @@ def main():
             max_target_length=config['data']['max_target_length']
         )
     
-    tokenized_dataset = dataset['train'].map(
+    tokenized_train = dataset['train'].map(
         tokenize_function,
         batched=True,
         remove_columns=dataset['train'].column_names
     )
+    
+    # 如果有测试集，用作验证集
+    tokenized_eval = None
+    if 'test' in dataset and len(dataset['test']) > 0:
+        tokenized_eval = dataset['test'].map(
+            tokenize_function,
+            batched=True,
+            remove_columns=dataset['test'].column_names
+        )
+    
+    tokenized_dataset = tokenized_train
     
     # 数据整理器
     data_collator = DataCollatorForLanguageModeling(
         tokenizer=tokenizer,
         mlm=False
     )
+    
+    # 检查是否有验证集
+    has_eval_dataset = tokenized_eval is not None and len(tokenized_eval) > 0
+    eval_steps = config['training'].get('eval_steps', 0)
     
     # 训练参数
     training_args = TrainingArguments(
@@ -78,18 +93,21 @@ def main():
         per_device_train_batch_size=config['training']['per_device_train_batch_size'],
         per_device_eval_batch_size=config['training']['per_device_eval_batch_size'],
         gradient_accumulation_steps=config['training']['gradient_accumulation_steps'],
-        learning_rate=config['training']['learning_rate'],
+        learning_rate=float(config['training']['learning_rate']),
         weight_decay=config['training']['weight_decay'],
         warmup_steps=config['training']['warmup_steps'],
         logging_steps=config['training']['logging_steps'],
         save_steps=config['training']['save_steps'],
-        eval_steps=config['training']['eval_steps'],
+        eval_steps=eval_steps if has_eval_dataset else None,
         save_total_limit=config['training']['save_total_limit'],
         fp16=config['training']['fp16'],
         gradient_checkpointing=config['training']['gradient_checkpointing'],
         optim=config['training']['optim'],
         report_to="tensorboard",
-        load_best_model_at_end=True,
+        # 如果有验证集且配置了 eval_steps，启用评估策略
+        eval_strategy="steps" if has_eval_dataset and eval_steps > 0 else "no",
+        # 只有在有评估策略时才启用 load_best_model_at_end
+        load_best_model_at_end=True if has_eval_dataset and eval_steps > 0 else False,
     )
     
     # 创建训练器
@@ -97,6 +115,7 @@ def main():
         model=model,
         args=training_args,
         train_dataset=tokenized_dataset,
+        eval_dataset=tokenized_eval if tokenized_eval is not None else None,
         data_collator=data_collator,
     )
     
@@ -124,4 +143,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 

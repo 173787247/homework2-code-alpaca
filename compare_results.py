@@ -102,8 +102,8 @@ def main():
                        help="配置文件路径")
     parser.add_argument("--num_samples", type=int, default=50,
                        help="评估样本数")
-    parser.add_argument("--output_dir", type=str, default="./comparison_results",
-                       help="输出目录")
+    parser.add_argument("--output_dir", type=str, default="./reports",
+                       help="输出目录（默认：./reports，报告文件会提交到GitHub）")
     args = parser.parse_args()
     
     # 加载配置
@@ -276,4 +276,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
